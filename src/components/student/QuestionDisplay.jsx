@@ -27,14 +27,22 @@ const QuestionDisplay = ({ poll, onAnswer }) => {
     }
   };
 
-  return (
-    <div className="h-screen flex items-center justify-center">
-      <div className="bg-white p-6 rounded shadow-md max-w-xl w-full">
-        <h2 className="text-lg font-semibold mb-4">{poll.question}</h2>
+    return (
+    <div className="h-screen flex items-center justify-center bg-white px-4">
+      <div className="max-w-xl w-full p-8 bg-white rounded-lg shadow-lg">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">{poll.question}</h2>
+        </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {poll.options.map((opt, idx) => (
-            <div key={idx} className="flex items-center">
+            <div
+              key={idx}
+              className={`border rounded-lg p-4 cursor-pointer transition flex items-center ${
+                selected === opt ? 'border-purple-600 bg-purple-50 shadow' : 'border-gray-200'
+              }`}
+              onClick={() => !submitted && setSelected(opt)}
+            >
               <input
                 type="radio"
                 id={`option-${idx}`}
@@ -42,20 +50,26 @@ const QuestionDisplay = ({ poll, onAnswer }) => {
                 value={opt}
                 checked={selected === opt}
                 onChange={() => setSelected(opt)}
-                className="mr-2"
+                className="mr-3"
                 disabled={submitted}
               />
-              <label htmlFor={`option-${idx}`} className="text-gray-700">{opt}</label>
+              <label htmlFor={`option-${idx}`} className="text-gray-800 cursor-pointer">
+                {opt}
+              </label>
             </div>
           ))}
         </div>
 
-        <div className="mt-6 flex justify-between items-center">
-          <p className="text-sm text-gray-600">Time left: <strong>{timer}s</strong></p>
+        <div className="mt-8 flex justify-between items-center">
+          <p className="text-sm text-gray-600">
+            Time left: <strong>{timer}s</strong>
+          </p>
           <button
             onClick={handleSubmit}
             disabled={!selected || submitted}
-            className={`px-4 py-2 rounded text-white ${selected && !submitted ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400 cursor-not-allowed'}`}
+            className={`px-6 py-2 rounded-full font-medium text-white transition ${
+              selected && !submitted ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-300 cursor-not-allowed'
+            }`}
           >
             Submit
           </button>
